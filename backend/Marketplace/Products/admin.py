@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, SubCategory, Product
+from .models import Category, SubCategory, Product, ProductImage
 
 
 @admin.register(Category)
@@ -15,11 +15,20 @@ class SubCategoryAdmin(admin.ModelAdmin):
     search_fields = ("name",)
 
 
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    extra = 1  # shows 1 empty image field by default
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
+    inlines = [ProductImageInline]
+
     list_display = (
         "title",
         "price",
+        'old_price',
+        'rating',
         "category",
         "subcategory",
         "is_sold",

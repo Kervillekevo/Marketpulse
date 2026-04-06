@@ -38,11 +38,8 @@ class Product(models.Model):
     title = models.CharField(max_length=30)
     description = models.CharField(max_length=200)
     price = models.DecimalField(decimal_places=2, max_digits=10)
-    images = models.ImageField(
-        blank=True,
-        null=True,
-        upload_to='media/product_images/'
-    )
+    old_price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
+    rating = models.FloatField(default=0)
 
     category = models.ForeignKey(
         Category,
@@ -61,5 +58,25 @@ class Product(models.Model):
     is_sold = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def discount_percentage(self):
+        if self.old_price and self.old_price > self.price:
+            return round(
+                ((self.old_price - self.price) / self.old_price) * 100,
+                0
+            )
+        return 0
+
     def __str__(self):
         return self.title
+
+    
+class ProductImage(models.Model):
+    product = models.ForeignKey(
+        Product,
+        related_name="images",
+        on_delete=models.CASCADE
+    )
+    image = models.ImageField(upload_to="product_images/")
+
+    def __str__(self):
+        return f"Image for {self.product.title}"

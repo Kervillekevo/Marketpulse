@@ -26,7 +26,11 @@ SECRET_KEY = 'django-insecure-1e*(%4-ooue@s+w!#(x!sy-+*f5-81h%s3tmnlw#jh)9c=6&&l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "hotelless-jackelyn-lurid.ngrok-free.dev",
+]
 
 
 # Application definition
@@ -131,6 +135,8 @@ USE_TZ = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "http://127.0.0.1:5174",
+    "http://localhost:5174",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -152,7 +158,24 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = 'kelvinngui00@gmail.com'  # <-- Replace this with your Gmail
-EMAIL_HOST_PASSWORD = 'tssf uoui fmat muwc'  # <-- We'll create this below
+EMAIL_HOST_USER = 'kelvinngui00@gmail.com'  
+EMAIL_HOST_PASSWORD = 'tssf uoui fmat muwc' 
 
 DEFAULT_FROM_EMAIL = 'kelvinngui00@gmail.com'
+
+
+# MPESA CONFIG
+
+MPESA_ENV = "sandbox"
+#consumer key public identifier of your app
+#Django uses it to request for an access token
+MPESA_CONSUMER_KEY = "X0WHlsTUfuA7to5QsZSuyck9g57Gh0k3GqiJ3qOrFxmwJLQl"
+#private password of mpesa app
+#used with consumer key to authenticate backend with safaricom servers
+MPESA_CONSUMER_SECRET = "cedKmgNZPvKgsAmEtgeLRZpbNlUm3lP4SHCSvd2OvOEP2k4JCo4I6mII5VTjLCH2"
+
+MPESA_SHORTCODE = "174379"
+
+MPESA_PASSKEY = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
+
+MPESA_CALLBACK_URL = "https://hotelless-jackelyn-lurid.ngrok-free.dev/orders/mpesa/callback/"
