@@ -1,32 +1,34 @@
 import { useContext, useState } from 'react';
 import { AuthContext } from './AuthContext';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Navbar.css';
 
 export default function Navbar() {
-  const { user, signIn, signUp, signOut, requestPasswordReset, updateProfile, reloadProfile } =
-    useContext(AuthContext);
+  const {
+    user, signIn, signUp, signOut,
+    requestPasswordReset, updateProfile,
+    reloadProfile, cartCount,
+  } = useContext(AuthContext);
 
-  const navigate = useNavigate();
+  const navigate  = useNavigate();
+  const location  = useLocation();
 
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [isReset, setIsReset] = useState(false);
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showProfileModal, setShowProfileModal] = useState(false);
-  const [bio, setBio] = useState('');
-  const [phone, setPhone] = useState('');
-  const [profilePhotoFile, setProfilePhotoFile] = useState(null);
-  const [removePhoto, setRemovePhoto] = useState(false);
+  const [menuOpen,          setMenuOpen]          = useState(false);
+  const [showAuthModal,     setShowAuthModal]     = useState(false);
+  const [isSignUp,          setIsSignUp]          = useState(false);
+  const [isReset,           setIsReset]           = useState(false);
+  const [username,          setUsername]          = useState('');
+  const [email,             setEmail]             = useState('');
+  const [password,          setPassword]          = useState('');
+  const [showProfileModal,  setShowProfileModal]  = useState(false);
+  const [bio,               setBio]               = useState('');
+  const [phone,             setPhone]             = useState('');
+  const [profilePhotoFile,  setProfilePhotoFile]  = useState(null);
+  const [removePhoto,       setRemovePhoto]       = useState(false);
 
   const resetAuthForm = () => {
-    setUsername('');
-    setEmail('');
-    setPassword('');
-    setIsSignUp(false);
-    setIsReset(false);
+    setUsername(''); setEmail(''); setPassword('');
+    setIsSignUp(false); setIsReset(false);
   };
 
   const handleSignIn = async (e) => {
@@ -35,8 +37,7 @@ export default function Navbar() {
       await signIn(username, password);
       setShowAuthModal(false);
       resetAuthForm();
-    } catch (err) {
-      console.error(err);
+    } catch {
       alert('Sign-in failed. Please check your credentials.');
     }
   };
@@ -47,8 +48,7 @@ export default function Navbar() {
       await signUp(username, email, password);
       setIsSignUp(false);
       resetAuthForm();
-    } catch (err) {
-      console.error(err);
+    } catch {
       alert('Sign-up failed. Try again.');
     }
   };
@@ -60,8 +60,7 @@ export default function Navbar() {
       alert('If the email exists, a reset link has been sent.');
       setIsReset(false);
       resetAuthForm();
-    } catch (err) {
-      console.error(err);
+    } catch {
       alert('Failed to send reset link.');
     }
   };
@@ -78,177 +77,229 @@ export default function Navbar() {
 
   const handleSaveProfile = async () => {
     try {
-      await updateProfile({
-        bio: bio,
-        phone: phone,
-        profile_photo: profilePhotoFile,
-        removePhoto: removePhoto,
-      });
-
+      await updateProfile({ bio, phone, profile_photo: profilePhotoFile, removePhoto });
       await reloadProfile();
-
       alert('Profile updated!');
       setShowProfileModal(false);
-    } catch (err) {
-      console.error(err);
+    } catch {
       alert('Failed to update profile.');
     }
+  };
+
+  const navLinks = [
+    { label: 'Home',      path: '/' },
+    { label: 'Products', path: '/products'},
+    { label: 'My Orders', path: '/orders' },
+    { label: 'About Us', path: '/About us'},
+    { label:'Contact Us', path: 'Contact us'},
+
+  ];
+
+  const isActive = (path) => location.pathname === path;
+
+  const handleNav = (path) => {
+    navigate(path);
+    setMenuOpen(false);
   };
 
   return (
     <>
       <header className="header">
-        <div className="logo" onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
-          MarketPulse
+
+        <div className="logo" onClick={() => navigate('/')}>
+          Market<span>Pulse</span>
         </div>
 
+    
+        <nav className="header-nav">
+          {navLinks.map((link) => (
+            <div
+              key={link.path}
+              className={`nav-link ${isActive(link.path) ? 'active' : ''}`}
+              onClick={() => navigate(link.path)}
+            >
+              {link.label}
+            </div>
+          ))}
+        </nav>
+
+      
         <div className="header-actions">
-          <img
-            src="/cart.png"
-            alt="Cart"
-            className="cart-icon"
-            onClick={() => navigate("/Cart")}
-          />
 
+          
+          <div className="cart-wrapper" onClick={() => navigate('/Cart')}>
+            <img src="/cart.png" alt="Cart" className="cart-icon" />
+            {cartCount > 0 && (
+              <span className="cart-badge">{cartCount}</span>
+            )}
+          </div>
 
-          {/* 👤 PROFILE AVATAR (Only when logged in) */}
+          
           {user && (
             <img
               src={user.profile_photo || '/avatar.png'}
               alt="Profile"
               className="header-avatar"
               onClick={handleOpenProfileModal}
-              style={{ cursor: 'pointer' }}
             />
           )}
 
-          {/* 🔐 AUTH BUTTONS */}
+        
           {user ? (
-            <button onClick={signOut} className="header-btn">
+            <button className="signout-btn" onClick={signOut}>
               Sign Out
             </button>
           ) : (
-            <button onClick={() => setShowAuthModal(true)} className="header-btn">
+            <button className="header-btn" onClick={() => setShowAuthModal(true)}>
               Sign In
             </button>
           )}
+
+        
+          <button
+            className="mobile-menu-btn"
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? '✕' : '☰'}
+          </button>
         </div>
       </header>
 
-      {/* ---------- Auth Modal ---------- */}
+      
+      <div className={`mobile-nav ${menuOpen ? 'open' : ''}`}>
+        {navLinks.map((link) => (
+          <div
+            key={link.path}
+            className="mobile-nav-link"
+            onClick={() => handleNav(link.path)}
+          >
+            {link.label}
+          </div>
+        ))}
+      </div>
+
+      
       {showAuthModal && (
-        <div className="modal">
+        <div className="modal-overlay" onClick={() => setShowAuthModal(false)}>
           <form
-            className="modal-content"
+            className="modal-card"
+            onClick={(e) => e.stopPropagation()}
             onSubmit={isReset ? handleReset : isSignUp ? handleSignUp : handleSignIn}
           >
-            <h2>{isReset ? 'Reset Password' : isSignUp ? 'Sign Up' : 'Sign In'}</h2>
-
-            {!isReset && (
-              <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                required
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            )}
-
-            {(isSignUp || isReset) && (
-              <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                required
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            )}
-
-            {!isReset && (
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                required
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            )}
-
-            <button type="submit">
-              {isReset ? 'Send Reset Link' : isSignUp ? 'Register' : 'Sign In'}
-            </button>
+            <div>
+              <h2>
+                {isReset ? 'Reset Password' : isSignUp ? 'Create Account' : 'Welcome Back'}
+              </h2>
+              <p className="modal-subtitle">
+                {isReset
+                  ? 'Enter your email to receive a reset link'
+                  : isSignUp
+                  ? 'Sign up to start shopping'
+                  : 'Sign in to your MarketPulse account'}
+              </p>
+            </div>
 
             {!isReset && (
               <>
-                <p>
-                  {isSignUp ? (
-                    <>
-                      Already have an account?{' '}
-                      <span className="link" onClick={() => setIsSignUp(false)}>
-                        Sign In
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      No account?{' '}
-                      <span className="link" onClick={() => setIsSignUp(true)}>
-                        Sign Up
-                      </span>
-                    </>
-                  )}
-                </p>
-                <p>
-                  <span
-                    className="link"
-                    onClick={() => {
-                      setIsReset(true);
-                      setIsSignUp(false);
-                    }}
-                  >
-                    Forgot Password?
-                  </span>
-                </p>
+                <div className="modal-label">Username</div>
+                <input
+                  type="text"
+                  placeholder="Enter your username"
+                  value={username}
+                  required
+                  onChange={(e) => setUsername(e.target.value)}
+                />
               </>
             )}
 
-            {isReset && (
-              <p>
-                <span className="link" onClick={() => setIsReset(false)}>
-                  Back to Sign In
-                </span>
-              </p>
+            {(isSignUp || isReset) && (
+              <>
+                <div className="modal-label">Email</div>
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  required
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </>
             )}
 
-            <button
-              type="button"
-              className="close-btn"
-              onClick={() => setShowAuthModal(false)}
-            >
-              Close
+            {!isReset && (
+              <>
+                <div className="modal-label">Password</div>
+                <input
+                  type="password"
+                  placeholder="Enter your password"
+                  value={password}
+                  required
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </>
+            )}
+
+            <button type="submit" className="modal-submit-btn">
+              {isReset ? 'Send Reset Link' : isSignUp ? 'Create Account' : 'Sign In'}
+            </button>
+
+            <div className="modal-divider" />
+
+            {!isReset && (
+              <div className="modal-link-row">
+                {isSignUp ? (
+                  <>Already have an account?{' '}
+                    <span className="modal-link" onClick={() => setIsSignUp(false)}>Sign In</span>
+                  </>
+                ) : (
+                  <>No account?{' '}
+                    <span className="modal-link" onClick={() => setIsSignUp(true)}>Sign Up</span>
+                  </>
+                )}
+              </div>
+            )}
+
+            <div className="modal-link-row">
+              {isReset ? (
+                <span className="modal-link" onClick={() => setIsReset(false)}>← Back to Sign In</span>
+              ) : (
+                <span className="modal-link" onClick={() => { setIsReset(true); setIsSignUp(false); }}>
+                  Forgot Password?
+                </span>
+              )}
+            </div>
+
+            <button type="button" className="modal-close-btn" onClick={() => setShowAuthModal(false)}>
+              Cancel
             </button>
           </form>
         </div>
       )}
 
-      {/* ---------- Profile Modal ---------- */}
+  
       {showProfileModal && user && (
-        <div className="modal">
-          <div className="modal-content">
+        <div className="modal-overlay" onClick={() => setShowProfileModal(false)}>
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
             <h2>Edit Profile</h2>
 
-            <img
-              src={!removePhoto ? user.profile_photo || '/avatar.png' : '/avatar.png'}
-              alt="Profile"
-              style={{ width: '100px', height: '100px', borderRadius: '50%' }}
-            />
+            <div className="profile-avatar-section">
+              <img
+                src={!removePhoto ? (user.profile_photo || '/avatar.png') : '/avatar.png'}
+                alt="Profile"
+              />
+              <div className="profile-avatar-info">
+                <div className="profile-avatar-name">{user.username}</div>
+                <div className="profile-avatar-email">{user.email}</div>
+              </div>
+            </div>
 
             {user.profile_photo && !removePhoto && (
-              <button onClick={() => setRemovePhoto(true)}>
-                Remove Current Photo
+              <button className="remove-photo-btn" onClick={() => setRemovePhoto(true)}>
+                🗑 Remove Photo
               </button>
             )}
 
-            <label>Upload New Photo:</label>
+            <div className="modal-label">Upload New Photo</div>
             <input
               type="file"
               accept="image/*"
@@ -258,17 +309,27 @@ export default function Navbar() {
               }}
             />
 
-            <p><strong>Username:</strong> {user.username}</p>
-            <p><strong>Email:</strong> {user.email}</p>
+            <div className="modal-label">Bio</div>
+            <textarea
+              placeholder="Tell us about yourself..."
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+            />
 
-            <label>Bio:</label>
-            <textarea value={bio} onChange={(e) => setBio(e.target.value)} />
+            <div className="modal-label">Phone</div>
+            <input
+              type="text"
+              placeholder="e.g. 0712 345 678"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
 
-            <label>Phone:</label>
-            <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
-
-            <button onClick={handleSaveProfile}>Save</button>
-            <button onClick={() => setShowProfileModal(false)}>Cancel</button>
+            <button className="modal-submit-btn" onClick={handleSaveProfile}>
+              Save Changes
+            </button>
+            <button className="modal-close-btn" onClick={() => setShowProfileModal(false)}>
+              Cancel
+            </button>
           </div>
         </div>
       )}

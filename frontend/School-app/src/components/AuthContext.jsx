@@ -6,50 +6,69 @@ const BASE_URL =  "http://127.0.0.1:8000/Accounts";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [cartCount, setCartCount] = useState(0);
+
   const [token, setToken] = useState(() => {
     const savedToken = localStorage.getItem('token');
     return savedToken && savedToken !== '' ? savedToken : null;
   });
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+ useEffect(() => {
 
-    const fetchProfile = async () => {
-      if (!token) {
-        setUser(null);
-        setLoading(false);
-        return;
+  const fetchProfileAndCart = async () => {
+    if (!token) {
+      setUser(null);
+      setCartCount(0);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // 1️⃣ Fetch Profile
+      const profileRes = await fetch(`${BASE_URL}/profile/`, {
+        headers: { Authorization: `Token ${token}` },
+      });
+
+      if (!profileRes.ok) {
+        throw new Error("Invalid token");
       }
 
-      try {
-        const res = await fetch(`${BASE_URL}/profile/`, {
-          headers: {
-            'Authorization': `Token ${token}`,
-          },
-        });
+      const profileData = await profileRes.json();
+      setUser(profileData);
 
-        if (res.ok) {
-          const data = await res.json();
-          setUser(data);
-          console.log('✅ Profile loaded successfully');
-        } else {
-          // Clear invalid token
-          console.log('❌ Invalid token, clearing authentication...');
-          setUser(null);
-          setToken(null);
-          localStorage.removeItem('token');
-        }
-      } catch (error) {
-        console.error('Profile fetch error:', error);
-        setUser(null);
-        // Don't clear token on network errors, only on auth errors
-      } finally {
-        setLoading(false);
+      // 2️⃣ Fetch Cart
+      const cartRes = await fetch("http://127.0.0.1:8000/orders/cart/", {
+        headers: { Authorization: `Token ${token}` },
+      });
+
+      if (cartRes.ok) {
+        const cartData = await cartRes.json();
+
+        const totalItems = cartData?.items
+          ? cartData.items.reduce((total, item) => total + item.quantity, 0)
+          : 0;
+
+        setCartCount(totalItems);
+      } else {
+        setCartCount(0);
       }
-    };
 
-    fetchProfile();
-  }, [token]);
+    } catch (error) {
+      console.log("Auth error, clearing session...");
+      setUser(null);
+      setToken(null);
+      setCartCount(0);
+      localStorage.removeItem("token");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProfileAndCart();
+
+}, [token]);
+
 
   const signIn = async (username, password) => {
     try {
@@ -112,6 +131,7 @@ export function AuthProvider({ children }) {
       localStorage.removeItem('token');
       setToken(null);
       setUser(null);
+      setCartCount(0);
       console.log('✅ Logged out successfully');
     }
   };
@@ -247,6 +267,8 @@ export function AuthProvider({ children }) {
         requestPasswordReset,
         passwordResetConfirm,
         reloadProfile,
+        cartCount,
+        setCartCount,
       }}
     >
       {children}
