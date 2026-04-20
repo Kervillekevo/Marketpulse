@@ -4,17 +4,17 @@ import Footer from "../components/Footer";
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaWhatsapp } from "react-icons/fa";
 
 const contactCards = [
-  { icon: "📞", label: "Call Us", value: "0742 800 420", sub: "Mon–Sat, 8am–8pm" },
-  { icon: "✉️", label: "Email Us", value: "kelvinngui00@gmail.com", sub: "We reply within 24hrs" },
-  { icon: "📍", label: "Find Us", value: "Nairobi, Kenya", sub: "Serving all 47 counties" },
-  { icon: "⚡", label: "Live Chat", value: "Available on WhatsApp", sub: "Instant responses" },
+  { icon: "📞", label: "Call Us",    value: "0790 240220",              sub: "Mon–Sat, 8am–8pm" },
+  { icon: "✉️", label: "Email Us",   value: "kelvinngui00@gmail.com",   sub: "We reply within 24hrs" },
+  { icon: "📍", label: "Find Us",    value: "Nairobi, Kenya",           sub: "Serving all 47 counties" },
+  { icon: "⚡", label: "Live Chat",  value: "Available on WhatsApp",    sub: "Instant responses" },
 ];
 
 const faqs = [
-  { q: "How fast is delivery?", a: "Same-day delivery within Nairobi. Upcountry orders take 2–4 business days." },
-  { q: "Can I return a product?", a: "Yes — we offer hassle-free 7-day returns on all eligible products." },
-  { q: "Is payment secure?", a: "Absolutely. We use M-Pesa STK push and all transactions are encrypted." },
-  { q: "How do I track my order?", a: "Log in to your account and visit My Orders to track your shipment in real time." },
+  { q: "How fast is delivery?",      a: "Same-day delivery within Nairobi. Upcountry orders take 2–4 business days." },
+  { q: "Are your products genuine?", a: "Yes — all our products are 100% genuine and sourced from authorized distributors." },
+  { q: "Is payment secure?",         a: "Absolutely. We use M-Pesa STK push and all transactions are encrypted." },
+  { q: "How do I track my order?",   a: "Log in to your account and visit My Orders to track your shipment in real time." },
 ];
 
 function Contact() {
@@ -34,8 +34,8 @@ function Contact() {
   };
 
   const handleWhatsApp = () => {
-    const msg = encodeURIComponent("Hello MarketPulse, I need help with...");
-    window.open(`https://wa.me/254742800420?text=${msg}`, "_blank");
+    const msg = encodeURIComponent("Hello Big Five Technologies, I need help with...");
+    window.open(`https://wa.me/254790240220?text=${msg}`, "_blank");
   };
 
   return (
@@ -48,7 +48,7 @@ function Contact() {
         <div className="contact-hero-inner">
           <span className="contact-badge">Get In Touch</span>
           <h1>We're Here to <span>Help You</span></h1>
-          <p>Have a question, complaint, or just want to say hi? We'd love to hear from you.</p>
+          <p>Have a question about a product or your order? We'd love to hear from you.</p>
         </div>
       </section>
 
@@ -76,7 +76,7 @@ function Contact() {
 
             {submitted && (
               <div className="contact-success">
-                ✅ Message sent! We'll get back to you within 24 hours.
+                Message sent! We'll get back to you within 24 hours.
               </div>
             )}
 
@@ -155,7 +155,7 @@ function Contact() {
 
             <div className="contact-side-card">
               <h3>Follow Us</h3>
-              <p className="contact-social-desc">Stay updated with our latest deals and news.</p>
+              <p className="contact-social-desc">Stay updated with our latest deals and tech news.</p>
               <div className="contact-socials">
                 <a href="#" className="contact-social-btn"><FaFacebookF /></a>
                 <a href="#" className="contact-social-btn"><FaTwitter /></a>

@@ -87,12 +87,11 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    { label: 'Home',      path: '/' },
-    { label: 'Products', path: '/products'},
-    { label: 'My Orders', path: '/orders' },
-    { label: 'About Us', path: '/About us'},
-    { label:'Contact Us', path: 'Contact us'},
-
+    { label: 'Home',       path: '/' },
+    { label: 'Products',   path: '/products' },
+    { label: 'My Orders',  path: '/orders' },
+    { label: 'About Us',   path: '/About us' },
+    { label: 'Contact Us', path: 'Contact us' },
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -106,11 +105,13 @@ export default function Navbar() {
     <>
       <header className="header">
 
+        {/* ✅ Big Five Technologies logo */}
         <div className="logo" onClick={() => navigate('/')}>
-          Market<span>Pulse</span>
+          <span className="logo-b">B</span>
+          <span className="logo-main">igFive</span>
+          <span>Technologies</span>
         </div>
 
-    
         <nav className="header-nav">
           {navLinks.map((link) => (
             <div
@@ -123,10 +124,8 @@ export default function Navbar() {
           ))}
         </nav>
 
-      
         <div className="header-actions">
 
-          
           <div className="cart-wrapper" onClick={() => navigate('/Cart')}>
             <img src="/cart.png" alt="Cart" className="cart-icon" />
             {cartCount > 0 && (
@@ -134,7 +133,6 @@ export default function Navbar() {
             )}
           </div>
 
-          
           {user && (
             <img
               src={user.profile_photo || '/avatar.png'}
@@ -144,7 +142,6 @@ export default function Navbar() {
             />
           )}
 
-        
           {user ? (
             <button className="signout-btn" onClick={signOut}>
               Sign Out
@@ -155,7 +152,6 @@ export default function Navbar() {
             </button>
           )}
 
-        
           <button
             className="mobile-menu-btn"
             onClick={() => setMenuOpen((o) => !o)}
@@ -166,7 +162,6 @@ export default function Navbar() {
         </div>
       </header>
 
-      
       <div className={`mobile-nav ${menuOpen ? 'open' : ''}`}>
         {navLinks.map((link) => (
           <div
@@ -179,7 +174,6 @@ export default function Navbar() {
         ))}
       </div>
 
-      
       {showAuthModal && (
         <div className="modal-overlay" onClick={() => setShowAuthModal(false)}>
           <form
@@ -195,8 +189,8 @@ export default function Navbar() {
                 {isReset
                   ? 'Enter your email to receive a reset link'
                   : isSignUp
-                  ? 'Sign up to start shopping'
-                  : 'Sign in to your MarketPulse account'}
+                  ? 'Sign up to start shopping at Big Five Technologies'
+                  : 'Sign in to your Big Five Technologies account'}
               </p>
             </div>
 
@@ -276,15 +270,17 @@ export default function Navbar() {
         </div>
       )}
 
-  
       {showProfileModal && user && (
         <div className="modal-overlay" onClick={() => setShowProfileModal(false)}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
             <h2>Edit Profile</h2>
+            <p style={{color: 'lime', fontSize: '11px', wordBreak: 'break-all'}}>
+              photo: {user.profile_photo || 'NULL'}
+            </p>
 
             <div className="profile-avatar-section">
               <img
-                src={!removePhoto ? (user.profile_photo || '/avatar.png') : '/avatar.png'}
+                src={!removePhoto && user.profile_photo ? user.profile_photo : '/avatar.png'}
                 alt="Profile"
               />
               <div className="profile-avatar-info">

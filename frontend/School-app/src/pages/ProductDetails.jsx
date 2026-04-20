@@ -4,6 +4,8 @@ import { AuthContext } from "../components/AuthContext";
 import "./ProductDetails.css";
 import Footer from "../components/Footer";
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -16,7 +18,7 @@ function ProductDetails() {
   const [wishlisted, setWishlisted] = useState(false);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/Products/${id}/`)
+    fetch(`${BASE_URL}/Products/${id}/`)
       .then((res) => {
         if (!res.ok) throw new Error("Product not found");
         return res.json();
@@ -39,7 +41,7 @@ function ProductDetails() {
     }
     try {
       setAdding(true);
-      const response = await fetch("http://127.0.0.1:8000/orders/cart/add/", {
+      const response = await fetch(`${BASE_URL}/orders/cart/add/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -57,7 +59,7 @@ function ProductDetails() {
     }
   };
 
-  // ✅ WhatsApp Order Integration
+  // WhatsApp Order Integration
   const handleWhatsAppOrder = () => {
     if (!product) return;
 
@@ -204,7 +206,7 @@ Please confirm availability. Thank you.
               </div>
             </div>
 
-            {/* Action Buttons */}
+            
             <div className="action-row">
               <button
                 className="buy-btn"

@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import "./ProductsLists.css";
 import Footer from "../components/Footer";
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function SubMenu({ items, onSelect, top, left, onMouseEnter, onMouseLeave }) {
   return createPortal(
     <div
@@ -31,6 +32,8 @@ function SubMenu({ items, onSelect, top, left, onMouseEnter, onMouseLeave }) {
 
 function ProductsLists() {
   const [products, setProducts] = useState([]);
+  const [categoriesData, setCategoriesData] = useState([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [category, setCategory] = useState("All");
@@ -57,17 +60,27 @@ function ProductsLists() {
     if (cat) setCategory(cat);
   }, [searchParams]);
 
-  const categoriesData = [
-    { name: "Electronics", sub: ["Laptops", "Cameras", "Audio & Headphones"] },
-    { name: "Fashion", sub: ["Men's Clothing", "Women's Clothing", "Shoes", "Bags"] },
-    { name: "Home", sub: ["Furniture", "Kitchen", "Decor", "Lighting"] },
-    { name: "Jewellery", sub: ["Necklaces", "Rings", "Bracelets", "Watches"] },
-    { name: "Sports", sub: ["Fitness", "Footwear", "Outdoor Activities"] },
-    { name: "Drinks", sub: ["Snacks", "Beverages", "Dairy Products"] },
-  ];
-
+  // Fetch categories from backend
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/Products/")
+    fetch(`${BASE_URL}/Products/categories/`)
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to fetch categories");
+        return res.json();
+      })
+      .then(data => {
+        const normalized = (Array.isArray(data) ? data : []).map(cat => ({
+          name: cat.name,
+          sub: cat.subcategories ?? [],
+        }));
+        setCategoriesData(normalized);
+      })
+      .catch(err => console.error("Categories fetch error:", err))
+      .finally(() => setCategoriesLoading(false));
+  }, []);
+
+  // Fetch products
+  useEffect(() => {
+    fetch(`${BASE_URL}/Products/`)
       .then(res => {
         if (!res.ok) throw new Error("Error fetching products");
         return res.json();
@@ -114,10 +127,7 @@ function ProductsLists() {
     leaveTimer.current = setTimeout(() => setHovered(null), 120);
   };
 
-  const handleSubMenuEnter = () => {
-    clearTimeout(leaveTimer.current);
-  };
-
+  const handleSubMenuEnter = () => clearTimeout(leaveTimer.current);
   const handleSubMenuLeave = () => {
     leaveTimer.current = setTimeout(() => setHovered(null), 120);
   };
@@ -142,15 +152,13 @@ function ProductsLists() {
               <circle cx="11" cy="11" r="8" />
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
-
             <input
               className="shop-search-input"
-              placeholder="Search products, brands..."
+              placeholder="Search laptops, phones, cameras..."
               value={searchInput}
               onChange={e => setSearchInput(e.target.value)}
               onKeyDown={handleKeyDown}
             />
-
             <button className="shop-search-btn" onClick={handleSearch}>
               Search
             </button>
@@ -163,9 +171,7 @@ function ProductsLists() {
 
             <ul className="shop-sidebar-list">
               <li
-                className={`shop-cat-item ${
-                  category === "All" ? "shop-cat-active" : ""
-                }`}
+                className={`shop-cat-item ${category === "All" ? "shop-cat-active" : ""}`}
                 onClick={() => {
                   setCategory("All");
                   setSubcategory("All");
@@ -173,50 +179,38 @@ function ProductsLists() {
                   setExpandedCat(null);
                 }}
               >
-                <span className="shop-cat-icon">🏠</span>
+                <span className="shop-cat-icon">🖥️</span>
                 <span>All Products</span>
               </li>
 
-              {categoriesData.map(cat => (
-                <li key={cat.name} className="shop-cat-wrapper">
-                  <div
-                    className={`shop-cat-item ${
-                      category === cat.name ? "shop-cat-active" : ""
-                    }`}
-                    ref={el => (itemRefs.current[cat.name] = el)}
-                    onMouseEnter={() => handleMouseEnter(cat.name)}
-                    onMouseLeave={handleMouseLeave}
-                    onClick={() => {
-                      if (isMobile) {
-                        handleMobileCatClick(cat);
-                      } else {
-                        setCategory(cat.name);
-                        setSubcategory("All");
-                      }
-                    }}
-                  >
-                    <span className="shop-cat-icon">
-                      {cat.name === "Electronics" && "💻"}
-                      {cat.name === "Fashion" && "👗"}
-                      {cat.name === "Home" && "🏡"}
-                      {cat.name === "Jewellery" && "💍"}
-                      {cat.name === "Sports" && "⚽"}
-                      {cat.name === "Drinks" && "🥤"}
-                    </span>
-
-                    <span>{cat.name}</span>
-
-                    {isMobile && cat.sub.length > 0 && (
-                      <span className="shop-cat-arrow">
-                        {expandedCat === cat.name ? "▾" : "▸"}
-                      </span>
-                    )}
-
-                    {!isMobile && <span className="shop-cat-chevron">›</span>}
-
-                    {!isMobile &&
-                      hovered === cat.name &&
-                      cat.sub.length > 0 && (
+              {categoriesLoading ? (
+                <li className="shop-cat-item" style={{ opacity: 0.5, cursor: "default" }}>
+                  Loading categories...
+                </li>
+              ) : (
+                categoriesData.map(cat => (
+                  <li key={cat.name} className="shop-cat-wrapper">
+                    <div
+                      className={`shop-cat-item ${category === cat.name ? "shop-cat-active" : ""}`}
+                      ref={el => (itemRefs.current[cat.name] = el)}
+                      onMouseEnter={() => handleMouseEnter(cat.name)}
+                      onMouseLeave={handleMouseLeave}
+                      onClick={() => {
+                        if (isMobile) {
+                          handleMobileCatClick(cat);
+                        } else {
+                          setCategory(cat.name);
+                          setSubcategory("All");
+                        }
+                      }}
+                    >
+                  
+                      <span className="shop-cat-icon">📦</span>
+                      <span>{cat.name}</span>
+                      {!isMobile && cat.sub.length > 0 && (
+                        <span className="shop-cat-chevron">›</span>
+                      )}
+                      {!isMobile && hovered === cat.name && cat.sub.length > 0 && (
                         <SubMenu
                           items={cat.sub}
                           top={menuPos.top}
@@ -230,41 +224,38 @@ function ProductsLists() {
                           }}
                         />
                       )}
-                  </div>
-
-                  {isMobile && expandedCat === cat.name && (
-                    <ul className="shop-sub-list">
-                      {cat.sub.map(sub => (
-                        <li
-                          key={sub}
-                          className={`shop-sub-item ${
-                            subcategory === sub ? "shop-sub-active" : ""
-                          }`}
-                          onClick={() => {
-                            setCategory(cat.name);
-                            setSubcategory(sub);
-                          }}
-                        >
-                          {sub}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              ))}
+                    </div>
+                  </li>
+                ))
+              )}
             </ul>
+
+            {isMobile && expandedCat && (
+              <ul className="shop-sub-list">
+                {categoriesData
+                  .find(c => c.name === expandedCat)
+                  ?.sub.map(sub => (
+                    <li
+                      key={sub}
+                      className={`shop-sub-item ${subcategory === sub ? "shop-sub-active" : ""}`}
+                      onClick={() => {
+                        setCategory(expandedCat);
+                        setSubcategory(sub);
+                      }}
+                    >
+                      {sub}
+                    </li>
+                  ))}
+              </ul>
+            )}
           </aside>
 
           <main className="shop-main">
             <div className="shop-header">
-              <h2>
-                <span>{activeLabel}</span>
-              </h2>
-
+              <h2><span>{activeLabel}</span></h2>
               {!loading && (
                 <span className="shop-count">
-                  {filteredProducts.length} product
-                  {filteredProducts.length !== 1 ? "s" : ""}
+                  {filteredProducts.length} product{filteredProducts.length !== 1 ? "s" : ""}
                 </span>
               )}
             </div>
@@ -279,13 +270,8 @@ function ProductsLists() {
                   filteredProducts.map(product => (
                     <div
                       key={product.id}
-                      className={`pcard ${
-                        product.is_sold ? "pcard-sold" : ""
-                      }`}
-                      onClick={() =>
-                        !product.is_sold &&
-                        navigate(`/products/${product.id}`)
-                      }
+                      className={`pcard ${product.is_sold ? "pcard-sold" : ""}`}
+                      onClick={() => !product.is_sold && navigate(`/products/${product.id}`)}
                     >
                       <div className="pcard-img-wrap">
                         <img
@@ -298,72 +284,45 @@ function ProductsLists() {
                           }
                           alt={product.title}
                         />
-
                         {product.is_sold && (
                           <div className="pcard-sold-overlay">
                             <span>SOLD OUT</span>
                           </div>
                         )}
-
-                        {product.discount_percentage > 0 &&
-                          !product.is_sold && (
-                            <span className="pcard-badge">
-                              -{product.discount_percentage}%
-                            </span>
-                          )}
+                        {product.discount_percentage > 0 && !product.is_sold && (
+                          <span className="pcard-badge">-{product.discount_percentage}%</span>
+                        )}
                       </div>
 
                       <div className="pcard-body">
                         {product.subcategory && (
-                          <span className="pcard-sub">
-                            {product.subcategory}
-                          </span>
+                          <span className="pcard-sub">{product.subcategory}</span>
                         )}
-
                         <h4>{product.title}</h4>
-
                         <div className="pcard-prices">
-                          <span className="pcard-price">
-                            Ksh {Number(product.price).toLocaleString()}
-                          </span>
-
-                          {product.old_price &&
-                            product.discount_percentage > 0 && (
-                              <span className="pcard-old">
-                                Ksh{" "}
-                                {Number(product.old_price).toLocaleString()}
-                              </span>
-                            )}
+                          <span className="pcard-price">Ksh {Number(product.price).toLocaleString()}</span>
+                          {product.old_price && product.discount_percentage > 0 && (
+                            <span className="pcard-old">Ksh {Number(product.old_price).toLocaleString()}</span>
+                          )}
                         </div>
-
                         {product.rating > 0 && (
                           <div className="pcard-rating">
                             <span className="pcard-stars">
                               {"★".repeat(Math.round(product.rating))}
-                              {"☆".repeat(
-                                5 - Math.round(product.rating)
-                              )}
+                              {"☆".repeat(5 - Math.round(product.rating))}
                             </span>
-                            <span className="pcard-rval">
-                              ({product.rating})
-                            </span>
+                            <span className="pcard-rval">({product.rating})</span>
                           </div>
                         )}
-
                         <button
-                          className={`pcard-btn ${
-                            product.is_sold ? "pcard-btn-off" : ""
-                          }`}
+                          className={`pcard-btn ${product.is_sold ? "pcard-btn-off" : ""}`}
                           disabled={product.is_sold}
                           onClick={e => {
                             e.stopPropagation();
-                            if (!product.is_sold)
-                              navigate(`/products/${product.id}`);
+                            if (!product.is_sold) navigate(`/products/${product.id}`);
                           }}
                         >
-                          {product.is_sold
-                            ? "Sold Out"
-                            : "View Details →"}
+                          {product.is_sold ? "Sold Out" : "View Details →"}
                         </button>
                       </div>
                     </div>

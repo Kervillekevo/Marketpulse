@@ -34,10 +34,31 @@ body {
   cursor: pointer;
   letter-spacing: -0.5px;
   user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }
 
+/* Blue "B" box */
+.logo-b {
+  background: #1a56db;
+  color: #fff;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-style: italic;
+  margin-right: 1px;
+}
+
+/* "igFive" in white */
+.logo-main {
+  color: #fff;
+}
+
+/* "Technologies" in red */
 .logo span {
-  color: #e11d48;
+  color: #e02020;
+  font-weight: 700;
+  margin-left: 5px;
 }
 
 .header-nav {
@@ -64,7 +85,7 @@ body {
 
 .nav-link.active {
   color: #fff;
-  background: rgba(225, 29, 72, 0.15);
+  background: rgba(26, 86, 219, 0.2);
 }
 
 .header-actions {
@@ -103,7 +124,7 @@ body {
   position: absolute;
   top: -6px;
   right: -6px;
-  background: linear-gradient(135deg, #e11d48, #f97316);
+  background: linear-gradient(135deg, #1a56db, #e02020);
   color: #fff;
   font-size: 10px;
   font-weight: 700;
@@ -128,12 +149,12 @@ body {
 }
 
 .header-avatar:hover {
-  border-color: #e11d48;
+  border-color: #1a56db;
   transform: scale(1.06);
 }
 
 .header-btn {
-  background: linear-gradient(135deg, #e11d48, #f97316);
+  background: linear-gradient(135deg, #1a56db, #e02020);
   border: none;
   color: #fff;
   padding: 9px 20px;
@@ -143,14 +164,14 @@ body {
   border-radius: 10px;
   font-family: inherit;
   transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 14px rgba(225, 29, 72, 0.3);
+  box-shadow: 0 4px 14px rgba(26, 86, 219, 0.3);
   white-space: nowrap;
 }
 
 .header-btn:hover {
   opacity: 0.9;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(225, 29, 72, 0.4);
+  box-shadow: 0 6px 20px rgba(26, 86, 219, 0.4);
 }
 
 .signout-btn {
@@ -293,7 +314,7 @@ body {
 
 .modal-card input:focus,
 .modal-card textarea:focus {
-  border-color: #e11d48;
+  border-color: #1a56db;
 }
 
 .modal-card input::placeholder,
@@ -307,7 +328,7 @@ body {
 }
 
 .modal-submit-btn {
-  background: linear-gradient(135deg, #e11d48, #f97316);
+  background: linear-gradient(135deg, #1a56db, #e02020);
   border: none;
   padding: 14px;
   color: #fff;
@@ -317,7 +338,7 @@ body {
   cursor: pointer;
   font-family: inherit;
   transition: opacity 0.2s, transform 0.2s;
-  box-shadow: 0 6px 20px rgba(225, 29, 72, 0.3);
+  box-shadow: 0 6px 20px rgba(26, 86, 219, 0.3);
 }
 
 .modal-submit-btn:hover {
@@ -337,14 +358,14 @@ body {
 }
 
 .modal-link {
-  color: #f97316;
+  color: #1a56db;
   cursor: pointer;
   font-weight: 600;
   transition: color 0.2s;
 }
 
 .modal-link:hover {
-  color: #e11d48;
+  color: #e02020;
   text-decoration: underline;
 }
 
@@ -403,9 +424,9 @@ body {
 }
 
 .remove-photo-btn {
-  background: rgba(225, 29, 72, 0.1);
-  border: 1px solid rgba(225, 29, 72, 0.2);
-  color: #e11d48;
+  background: rgba(224, 32, 32, 0.1);
+  border: 1px solid rgba(224, 32, 32, 0.2);
+  color: #e02020;
   font-size: 12px;
   font-weight: 600;
   padding: 6px 14px;
@@ -417,7 +438,7 @@ body {
 }
 
 .remove-photo-btn:hover {
-  background: rgba(225, 29, 72, 0.2);
+  background: rgba(224, 32, 32, 0.2);
 }
 
 @media (max-width: 768px) {

@@ -385,6 +385,7 @@ body {
 
 
 .cart-empty-wrap {
+  margin-top: 40px;
   min-height: 70vh;
   display: flex;
   align-items: center;

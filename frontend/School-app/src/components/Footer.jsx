@@ -11,9 +11,9 @@ function Footer() {
         <div className="footer-inner">
 
           <div className="footer-brand">
-            <div className="footer-logo">Market<span>Pulse</span></div>
+            <div className="footer-logo">BigFive<span>Technologies</span></div>
             <p className="footer-tagline">
-              Your one-stop platform for fast, secure, and seamless shopping — delivered right to your door in Nairobi.
+              Your trusted partner for laptops, phones, cameras, computers and home audio systems — delivered right to your door in Nairobi.
             </p>
             <div className="footer-socials">
               <a className="social-btn" href="#" aria-label="Website">
@@ -47,10 +47,11 @@ function Footer() {
               <h4>Shop</h4>
               <ul>
                 <li onClick={() => navigate("/")}>Home</li>
-                <li onClick={() => navigate("/")}>All Products</li>
-                <li onClick={() => navigate("/")}>Electronics</li>
-                <li onClick={() => navigate("/")}>Fashion</li>
-                <li onClick={() => navigate("/")}>Home & Living</li>
+                <li onClick={() => navigate("/products")}>All Products</li>
+                <li onClick={() => navigate("/products")}>Laptops & Computers</li>
+                <li onClick={() => navigate("/products")}>Phones</li>
+                <li onClick={() => navigate("/products")}>Cameras</li>
+                <li onClick={() => navigate("/products")}>Home Audio</li>
               </ul>
             </div>
 
@@ -79,11 +80,9 @@ function Footer() {
         </div>
       </div>
 
-
-
       <div className="footer-bottom">
         <div className="footer-inner footer-bottom-inner">
-          <p>© {new Date().getFullYear()} <strong>MarketPulse</strong>. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} <strong>Big Five Technologies</strong>. All rights reserved.</p>
           <p>Built with ❤️ in Nairobi, Kenya</p>
         </div>
       </div>

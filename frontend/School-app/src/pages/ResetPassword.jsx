@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import './ResetPassword.css';
 
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function ResetPassword() {
   const { uidb64, token } = useParams();
@@ -24,31 +24,26 @@ export default function ResetPassword() {
 
   const strength = getStrength(newPassword);
 
-  const passwordsMatch = confirmPassword.length > 0 && newPassword === confirmPassword;
+  const passwordsMatch    = confirmPassword.length > 0 && newPassword === confirmPassword;
   const passwordsMismatch = confirmPassword.length > 0 && newPassword !== confirmPassword;
 
   const handleReset = async (e) => {
     e.preventDefault();
-
     if (newPassword !== confirmPassword) {
       alert('Passwords do not match.');
       return;
     }
-
     setLoading(true);
-
     try {
       const response = await fetch(
-        `${BASE_URL}/password-reset-confirm/${uidb64}/${token}/`,
+        `${BASE_URL}/Accounts/password-reset-confirm/${uidb64}/${token}/`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ password: newPassword, token, uidb64 }),
         }
       );
-
       const data = await response.json();
-
       if (response.ok) {
         alert('Password reset successful! Please log in.');
         navigate('/', { replace: true });
@@ -63,15 +58,20 @@ export default function ResetPassword() {
   };
 
   return (
-    <>
+    <div className="reset-page-root">
       <div className="reset-page-wrapper">
+
+        <div className="reset-brand" onClick={() => navigate('/')}>
+          BigFive<span>Technologies</span>
+        </div>
+
         <div className="reset-card">
 
           <div className="reset-icon-wrap">🔑</div>
 
           <div className="reset-card-header">
             <h2>Set New Password</h2>
-            <p>Choose a strong password to secure your MarketPulse account.</p>
+            <p>Choose a strong password to secure your Big Five Technologies account.</p>
           </div>
 
           <form className="reset-form" onSubmit={handleReset}>
@@ -103,7 +103,7 @@ export default function ResetPassword() {
                     <div className={`strength-bar ${strength === 'strong' ? 'strong' : ''}`} />
                   </div>
                   <div className={`strength-label ${strength}`}>
-                    {strength === 'weak' && 'Weak password'}
+                    {strength === 'weak'   && 'Weak password'}
                     {strength === 'medium' && 'Medium strength'}
                     {strength === 'strong' && 'Strong password'}
                   </div>
@@ -129,8 +129,7 @@ export default function ResetPassword() {
                   {showConfirmPassword ? '🙈' : '👁'}
                 </span>
               </div>
-
-              {passwordsMatch   && <div className="match-hint match">Passwords match</div>}
+              {passwordsMatch    && <div className="match-hint match">Passwords match</div>}
               {passwordsMismatch && <div className="match-hint no-match">Passwords do not match</div>}
             </div>
 
@@ -152,9 +151,13 @@ export default function ResetPassword() {
           </div>
 
         </div>
+
+        <p className="reset-footer-note">
+          © {new Date().getFullYear()} Big Five Technologies. All rights reserved.
+        </p>
       </div>
 
       <Footer />
-    </>
+    </div>
   );
 }

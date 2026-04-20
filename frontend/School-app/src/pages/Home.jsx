@@ -3,21 +3,28 @@ import { useNavigate } from "react-router-dom";
 import "./Home.css";
 import Footer from "../components/Footer";
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+console.log("BASE_URL is:", BASE_URL);
+
 function Home() {
   const [featured, setFeatured] = useState([]);
+  const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
-  const categories = [
-    { name: "Electronics", icon: "💻", desc: "Laptops, Phones & More" },
-    { name: "Fashion", icon: "👗", desc: "Clothing, Shoes & Bags" },
-    { name: "Home", icon: "🏠", desc: "Furniture & Decor" },
-    { name: "Jewellery", icon: "💍", desc: "Rings, Watches & More" },
-    { name: "Sports", icon: "⚽", desc: "Fitness & Outdoor" },
-    { name: "Drinks", icon: "🥤", desc: "Snacks & Beverages" },
-  ];
+  useEffect(() => {
+    fetch(`${BASE_URL}/Products/categories/`)
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to fetch categories");
+        return res.json();
+      })
+      .then(data => {
+        if (Array.isArray(data)) setCategories(data);
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/Products/")
+    fetch(`${BASE_URL}/Products/`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) setFeatured(data.slice(0, 8));
@@ -32,13 +39,13 @@ function Home() {
         <section className="h-hero">
           <div className="h-hero-inner">
             <div className="h-hero-left">
-              <div className="h-tag">🔥 Nairobi's Favourite Online Store</div>
+              <div className="h-tag">💻 Nairobi's Leading Tech Store</div>
               <h1>
-                Shop Smart,<br />
-                Save <span>Big Today</span>
+                Latest Tech,<br />
+                Best <span>Prices Today</span>
               </h1>
               <p>
-                Discover thousands of products at unbeatable prices.
+                Discover the latest laptops, phones, cameras & more at unbeatable prices.
                 Enjoy <strong>Same Day Delivery 🛵</strong> within Nairobi
                 and <strong>Next Day</strong> delivery across KENYA 🇰🇪
               </p>
@@ -49,8 +56,8 @@ function Home() {
                 </div>
                 <div className="h-stat-divider" />
                 <div className="h-stat">
-                  <strong>12K+</strong>
-                  <span>Products</span>
+                  <strong>5K+</strong>
+                  <span>Tech Products</span>
                 </div>
                 <div className="h-stat-divider" />
                 <div className="h-stat">
@@ -67,14 +74,14 @@ function Home() {
                 </button>
               </div>
               <div className="h-trust">
-                <span>✅ Verified Sellers</span>
+                <span>✅ Genuine Products</span>
                 <span>🔒 Secure Payments</span>
                 <span>📦 Easy Returns</span>
               </div>
             </div>
             <div className="h-hero-right">
               <div className="h-hero-img-wrap">
-                <img src="/lkj.png" alt="Shop" />
+                <img src="/lkj.png" alt="Big Five Technologies" />
               </div>
               <div className="h-hero-badge-float h-badge-1">
                 <span>⚡</span>
@@ -100,13 +107,13 @@ function Home() {
             <span>•</span>
             <span>⚡ Flash sales every Friday</span>
             <span>•</span>
-            <span>🎁 Gift wrapping available</span>
+            <span>💻 Genuine tech products only</span>
             <span>•</span>
-            <span>📞 24/7 Customer support</span>
+            <span>📞 24/7 Customer support — 0790 240220</span>
             <span>•</span>
             <span>🔒 100% Secure Checkout</span>
             <span>•</span>
-            <span>✅ Verified Sellers Only</span>
+            <span>✅ Authorized Dealer</span>
           </div>
         </div>
 
@@ -126,9 +133,7 @@ function Home() {
                   className="h-cat-card"
                   onClick={() => navigate(`/products?category=${cat.name}`)}
                 >
-                  <div className="h-cat-icon">{cat.icon}</div>
                   <strong>{cat.name}</strong>
-                  <span>{cat.desc}</span>
                 </div>
               ))}
             </div>
@@ -140,7 +145,7 @@ function Home() {
             <div className="h-section-head centered">
               <div>
                 <p className="h-eyebrow">Why choose us</p>
-                <h2>The <span>MarketPulse</span> Difference</h2>
+                <h2>The <span>Big Five Technologies</span> Difference</h2>
               </div>
             </div>
             <div className="h-why-grid">
@@ -151,13 +156,13 @@ function Home() {
               </div>
               <div className="h-why-card">
                 <div className="h-why-icon">🛡️</div>
-                <h3>Buyer Protection</h3>
-                <p>Shop with confidence. Your money is safe until you confirm your order.</p>
+                <h3>Genuine Products</h3>
+                <p>Every product we sell is 100% genuine and sourced from authorized distributors.</p>
               </div>
               <div className="h-why-card">
                 <div className="h-why-icon">💰</div>
                 <h3>Best Prices</h3>
-                <p>We work directly with sellers to bring you the most competitive prices in Kenya.</p>
+                <p>We work directly with suppliers to bring you the most competitive tech prices in Kenya.</p>
               </div>
               <div className="h-why-card">
                 <div className="h-why-icon">🔄</div>
@@ -242,27 +247,20 @@ function Home() {
         <section className="h-cta">
           <div className="h-cta-inner">
             <div className="h-cta-text">
-              <h2>Ready to start shopping?</h2>
-              <p>Thousands of products, unbeatable prices, fast delivery across Kenya.</p>
+              <h2>Ready to upgrade your tech?</h2>
+              <p>Laptops, phones, cameras & more — unbeatable prices, fast delivery across Kenya.</p>
               <button onClick={() => navigate("/products")}>Browse All Products →</button>
             </div>
             <div className="h-cta-cards">
-              <div className="h-cta-card">
-                <span>📱</span>
-                <strong>Electronics</strong>
-              </div>
-              <div className="h-cta-card">
-                <span>👗</span>
-                <strong>Fashion</strong>
-              </div>
-              <div className="h-cta-card">
-                <span>🏠</span>
-                <strong>Home</strong>
-              </div>
-              <div className="h-cta-card">
-                <span>⚽</span>
-                <strong>Sports</strong>
-              </div>
+              {categories.slice(0, 4).map(cat => (
+                <div
+                  key={cat.name}
+                  className="h-cta-card"
+                  onClick={() => navigate(`/products?category=${cat.name}`)}
+                >
+                  <strong>{cat.name}</strong>
+                </div>
+              ))}
             </div>
           </div>
         </section>

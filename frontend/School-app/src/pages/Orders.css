@@ -67,6 +67,7 @@ body {
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .orders-empty-wrap {
+  margin-top: 40px;
   min-height: 70vh;
   display: flex;
   align-items: center;

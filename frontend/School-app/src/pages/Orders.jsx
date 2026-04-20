@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./Orders.css";
 import Footer from "../components/Footer";
 
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Orders() {
   const navigate = useNavigate();
@@ -441,8 +441,6 @@ function Orders() {
                 <label>Shipping Method</label>
                 <div className="shipping-method-options">
                   {[
-                    { value: "standard", icon: "📦", name: "Standard Delivery", desc: "5 days · Ksh 5" },
-                    { value: "express",  icon: "⚡", name: "Express Delivery",  desc: "2 days · Ksh 15" },
                     { value: "pickup",   icon: "🏪", name: "Store Pickup",      desc: "Today · Free" },
                   ].map((m) => (
                     <label key={m.value} className={`method-option ${shipmentForm.shipping_method === m.value ? "selected" : ""}`}>
