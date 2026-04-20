@@ -2,7 +2,7 @@ import { createContext, useState, useEffect } from 'react';
 
 export const AuthContext = createContext();
 
-const BASE_URL =  "http://127.0.0.1:8000/Accounts";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -25,7 +25,7 @@ export function AuthProvider({ children }) {
     }
 
     try {
-      // 1️⃣ Fetch Profile
+      // 1 Fetch Profile
       const profileRes = await fetch(`${BASE_URL}/profile/`, {
         headers: { Authorization: `Token ${token}` },
       });
@@ -37,8 +37,8 @@ export function AuthProvider({ children }) {
       const profileData = await profileRes.json();
       setUser(profileData);
 
-      // 2️⃣ Fetch Cart
-      const cartRes = await fetch("http://127.0.0.1:8000/orders/cart/", {
+      // Fetch Cart
+      const cartRes = await fetch(`${BASE_URL}/orders/cart/`, {
         headers: { Authorization: `Token ${token}` },
       });
 
@@ -132,7 +132,7 @@ export function AuthProvider({ children }) {
       setToken(null);
       setUser(null);
       setCartCount(0);
-      console.log('✅ Logged out successfully');
+      console.log('logged out successfully');
     }
   };
 
