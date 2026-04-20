@@ -3,7 +3,6 @@ import { createContext, useState, useEffect } from 'react';
 export const AuthContext = createContext();
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [cartCount, setCartCount] = useState(0);
@@ -25,7 +24,7 @@ export function AuthProvider({ children }) {
     }
 
     try {
-      // 1 Fetch Profile
+      // 1️⃣ Fetch Profile
       const profileRes = await fetch(`${BASE_URL}/profile/`, {
         headers: { Authorization: `Token ${token}` },
       });
@@ -37,7 +36,7 @@ export function AuthProvider({ children }) {
       const profileData = await profileRes.json();
       setUser(profileData);
 
-      // Fetch Cart
+      // 2️⃣ Fetch Cart
       const cartRes = await fetch(`${BASE_URL}/orders/cart/`, {
         headers: { Authorization: `Token ${token}` },
       });
@@ -85,7 +84,7 @@ export function AuthProvider({ children }) {
 
         setToken(authToken);
         localStorage.setItem('token', authToken);
-        console.log('✅ Login successful');
+        console.log('Login successful');
       } else {
         alert('Invalid credentials');
       }
@@ -132,7 +131,7 @@ export function AuthProvider({ children }) {
       setToken(null);
       setUser(null);
       setCartCount(0);
-      console.log('logged out successfully');
+      console.log('✅ Logged out successfully');
     }
   };
 
