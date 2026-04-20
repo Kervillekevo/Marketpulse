@@ -38,23 +38,31 @@ class ProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
     email = serializers.EmailField(source='user.email', read_only=True)
     remove_photo = serializers.BooleanField(write_only=True, required=False)
+    profile_photo = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
         fields = ['username', 'email', 'bio', 'phone', 'profile_photo', 'remove_photo']
+
+    def get_profile_photo(self, obj):
+        if obj.profile_photo:
+            return f"http://127.0.0.1:8000{obj.profile_photo.url}"
+        return None
 
     def update(self, instance, validated_data):
         if validated_data.pop('remove_photo', False):
             instance.profile_photo.delete(save=False)
             instance.profile_photo = None
 
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
+        # ✅ Get photo from request.FILES directly
+        request = self.context.get('request')
+        if request and request.FILES.get('profile_photo'):
+            instance.profile_photo = request.FILES['profile_photo']
 
+        instance.bio = validated_data.get('bio', instance.bio)
+        instance.phone = validated_data.get('phone', instance.phone)
         instance.save()
         return instance
-    
-    
     
 #Requests a reset link via email
 #Collects users email so that you can send them reset link
@@ -63,36 +71,4 @@ class PasswordResetRequestSerializer(serializers.Serializer):
 
 class SetNewPasswordSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True, min_length=6)
-    token = serializers.CharField()#reset token that was generated and sent in the email
-    uidb64 = serializers.CharField()#users id encoded in base64 so that you dont expose raw ids in urls
-
-
-#Core logic
-    def validate(self, attrs):
-        try:
-            #get values from the request payload(JSON body)
-            password = attrs.get('password')
-            token = attrs.get('token')
-            uidb64 = attrs.get('uidb64')
-
-            #Decodes the user id
-            #smart_str ensures the decoded value is a proper string
-            #Turns it back to original id
-            user_id = smart_str(urlsafe_base64_decode(uidb64))
-            user = User.objects.get(id=user_id)
-            #Fetch the user from the db
-
-            if not PasswordResetTokenGenerator().check_token(user, token):
-                raise serializers.ValidationError(_('Token is invalid or expired.'))
-        #verifies token if invalid raises an error
-            user.set_password(password)
-            user.save()
-        except User.DoesNotExist:
-            raise serializers.ValidationError(_('User does not exist.'))
-        except Exception as e:
-            raise serializers.ValidationError(_('The reset link is invalid or expired.'))
-        return attrs
-
-
-
-
+    

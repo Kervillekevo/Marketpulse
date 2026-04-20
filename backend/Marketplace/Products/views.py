@@ -4,7 +4,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import ProductsSerializers
-from .models import Product
+from .models import Product, Category
 
 @api_view(["GET"])
 @permission_classes([AllowAny])
@@ -88,3 +88,16 @@ def DeleteProduct(request, pk):
     
     product.delete()
     return Response({'message': 'Product deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def CategoryList(request):
+    categories = Category.objects.prefetch_related("subcategories").all()
+    data = [
+        {
+            "name": cat.name,
+            "subcategories": [sub.name for sub in cat.subcategories.all()]
+        }
+        for cat in categories
+    ]
+    return Response(data, status=status.HTTP_200_OK)

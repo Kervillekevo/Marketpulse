@@ -65,6 +65,7 @@ class ProfileDetailView(generics.RetrieveUpdateAPIView):
         return profile  
     
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def request_password_reset_email(request):
     serializer = PasswordResetRequestSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
@@ -76,18 +77,21 @@ def request_password_reset_email(request):
         uidb64 = urlsafe_base64_encode(smart_bytes(user.pk))
         token = PasswordResetTokenGenerator().make_token(user)
 
-        reset_url = f"http://localhost:3000/reset-password/{uidb64}/{token}/"
+        reset_url = f"http://localhost:5173/reset-password/{uidb64}/{token}/"
 
-        # Debug
-        print('✅ RESET URL:', reset_url)
-
-        send_mail(
+        print(' RESET URL:', reset_url)
+    
+        try:
+            send_mail(
             subject='Password Reset Request',
             message=f'Hi {user.username},\n\nClick the link to reset your password:\n{reset_url}\n\nIf you did not request this, please ignore.',
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[email],
             fail_silently=False,
-        )
+            )
+            print("Email sent successfully")
+        except Exception as e:
+            print(f"Email failed: {e}")
 
     return Response(
         {'success': 'If your email exists, we sent a password reset link.'},
@@ -96,6 +100,7 @@ def request_password_reset_email(request):
 
 
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def password_token_check(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
@@ -110,6 +115,7 @@ def password_token_check(request, uidb64, token):
 
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def password_reset_confirm(request, uidb64, token):
     serializer = SetNewPasswordSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
