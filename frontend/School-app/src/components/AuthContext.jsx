@@ -2,7 +2,8 @@ import { createContext, useState, useEffect } from 'react';
 
 export const AuthContext = createContext();
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/Accounts`;
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [cartCount, setCartCount] = useState(0);
@@ -36,8 +37,8 @@ export function AuthProvider({ children }) {
       const profileData = await profileRes.json();
       setUser(profileData);
 
-      // 2️⃣ Fetch Cart
-      const cartRes = await fetch(`${BASE_URL}/orders/cart/`, {
+      //Fetch Cart
+      const cartRes = await fetch(`${import.meta.env.VITE_API_BASE_URL}/orders/cart/`, {
         headers: { Authorization: `Token ${token}` },
       });
 
