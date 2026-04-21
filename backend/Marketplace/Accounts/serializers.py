@@ -46,9 +46,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def get_profile_photo(self, obj):
         if obj.profile_photo:
-            from cloudinary.utils import cloudinary_url
-            url, _ = cloudinary_url(str(obj.profile_photo), secure=True)
-            return url
+            return obj.profile_photo.url
         return None
 
     def update(self, instance, validated_data):
@@ -56,7 +54,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             instance.profile_photo.delete(save=False)
             instance.profile_photo = None
 
-        # ✅ Get photo from request.FILES directly
+        #Get photo from request.FILES directly
         request = self.context.get('request')
         if request and request.FILES.get('profile_photo'):
             instance.profile_photo = request.FILES['profile_photo']
