@@ -105,11 +105,10 @@ export default function Navbar() {
     <>
       <header className="header">
 
-        {/* ✅ Big Five Technologies logo */}
         <div className="logo" onClick={() => navigate('/')}>
           <span className="logo-b">B</span>
           <span className="logo-main">igFive</span>
-          <span>Technologies</span>
+          <span className="logo-tech">Technologies</span>
         </div>
 
         <nav className="header-nav">
@@ -125,7 +124,6 @@ export default function Navbar() {
         </nav>
 
         <div className="header-actions">
-
           <div className="cart-wrapper" onClick={() => navigate('/Cart')}>
             <img src="/cart.png" alt="Cart" className="cart-icon" />
             {cartCount > 0 && (
@@ -274,9 +272,6 @@ export default function Navbar() {
         <div className="modal-overlay" onClick={() => setShowProfileModal(false)}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
             <h2>Edit Profile</h2>
-            <p style={{color: 'lime', fontSize: '11px', wordBreak: 'break-all'}}>
-              photo: {user.profile_photo || 'NULL'}
-            </p>
 
             <div className="profile-avatar-section">
               <img
