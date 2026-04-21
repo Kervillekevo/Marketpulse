@@ -7,10 +7,11 @@ class ProductImageSerializer(serializers.ModelSerializer):
         model = ProductImage
         fields = ['id', 'image']
     def get_image(self, obj):
-        request = self.context.get('request')
-        if obj.image and request:
-            return request.build_absolute_uri(obj.image.url)
-        return None     
+        if obj.image:
+            from cloudinary.utils import cloudinary_url
+            url, _ = cloudinary_url(str(obj.image), secure=True)
+            return url
+        return None
 
 class ProductsSerializers(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)
