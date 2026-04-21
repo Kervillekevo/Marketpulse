@@ -46,7 +46,9 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def get_profile_photo(self, obj):
         if obj.profile_photo:
-            return f"http://127.0.0.1:8000{obj.profile_photo.url}"
+            from cloudinary.utils import cloudinary_url
+            url, _ = cloudinary_url(str(obj.profile_photo), secure=True)
+            return url
         return None
 
     def update(self, instance, validated_data):

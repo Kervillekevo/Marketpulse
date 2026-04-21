@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from cloudinary.models import CloudinaryField
 
 
 def user_profile_photo_path(instance, filename):
@@ -11,7 +12,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     bio = models.TextField(blank=True, null=True)
     phone = models.CharField(max_length=40, null=True, blank=True)
-    profile_photo = models.ImageField(upload_to=user_profile_photo_path, blank=True)
+    profile_photo = CloudinaryField('image', blank=True, null=True)
     def __str__(self):
         return f"{self.user.username}'s Profile"
 # Create your models here.
