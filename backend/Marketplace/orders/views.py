@@ -132,7 +132,7 @@ Thank you for shopping with Big Five Technologies! 💻
                 """,
                 from_email='kelvinngui00@gmail.com',
                 recipient_list=[request.user.email],
-                fail_silently=True,
+                fail_silently=False,
             )
     except Exception:
         pass
