@@ -37,9 +37,9 @@ body {
   display: flex;
   align-items: center;
   gap: 2px;
+  flex-shrink: 0;
 }
 
-/* Blue "B" box */
 .logo-b {
   background: #1a56db;
   color: #fff;
@@ -49,12 +49,10 @@ body {
   margin-right: 1px;
 }
 
-/* "igFive" in white */
 .logo-main {
   color: #fff;
 }
 
-/* "Technologies" in red */
 .logo span {
   color: #e02020;
   font-weight: 700;
@@ -92,6 +90,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
 }
 
 .cart-wrapper {
@@ -106,6 +105,7 @@ body {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.08);
   transition: background 0.2s, transform 0.2s;
+  flex-shrink: 0;
 }
 
 .cart-wrapper:hover {
@@ -146,6 +146,7 @@ body {
   cursor: pointer;
   border: 2px solid rgba(255, 255, 255, 0.12);
   transition: border-color 0.2s, transform 0.2s;
+  flex-shrink: 0;
 }
 
 .header-avatar:hover {
@@ -201,12 +202,14 @@ body {
   color: #fff;
   width: 40px;
   height: 40px;
+  min-width: 40px;
   border-radius: 10px;
   cursor: pointer;
   font-size: 18px;
   align-items: center;
   justify-content: center;
   transition: background 0.2s;
+  flex-shrink: 0;
 }
 
 .mobile-menu-btn:hover {
@@ -454,6 +457,20 @@ body {
     padding: 0 16px;
   }
 
+  .header-actions {
+    gap: 6px;
+  }
+
+  .signout-btn {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+
+  .header-btn {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+
   .modal-card {
     padding: 28px 24px;
   }
@@ -461,17 +478,30 @@ body {
 
 @media (max-width: 480px) {
   .logo {
-    font-size: 18px;
+    font-size: 15px;
+  }
+
+  .logo-main {
+    display: none;
+  }
+
+  .logo span {
+    margin-left: 2px;
+    font-size: 13px;
   }
 
   .header-btn,
   .signout-btn {
-    padding: 8px 14px;
-    font-size: 12px;
+    display: none;
   }
 
   .cart-wrapper {
     width: 36px;
     height: 36px;
+  }
+
+  .header-avatar {
+    width: 30px;
+    height: 30px;
   }
 }
