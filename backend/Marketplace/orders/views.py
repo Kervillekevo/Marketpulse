@@ -393,6 +393,13 @@ def mpesa_callback(request):
             order.save()
             print(f"Order {order.id} marked as PAID")
 
+            try:
+                if hasattr(order, 'shipment') and order.shipment:
+                    order.shipment.status = 'processing'
+                    order.shipment.save()
+            except Exception as e:
+                print(f"Shipment update error: {str(e)}")
+
             # Send payment confirmation email
             try:
                 if order.user.email:
