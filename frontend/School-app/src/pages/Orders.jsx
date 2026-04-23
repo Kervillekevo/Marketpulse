@@ -272,7 +272,7 @@ function Orders() {
                   {expandedOrder === order.id && (
                     <div className="order-expanded">
                       <div className="shipment-section">
-                        <div className="expanded-section-label">📦 Shipment Details</div>
+                        <div className="expanded-section-label">Shipment Details</div>
                         {shipmentLoading ? (
                           <div className="shipment-loading">Loading shipment info...</div>
                         ) : shipmentData ? (
@@ -321,7 +321,7 @@ function Orders() {
                             )}
                           </div>
                         ) : (
-                          <div className="no-shipment-note">⚠️ No shipment info added yet.</div>
+                          <div className="no-shipment-note">No shipment info added yet.</div>
                         )}
                       </div>
                     </div>

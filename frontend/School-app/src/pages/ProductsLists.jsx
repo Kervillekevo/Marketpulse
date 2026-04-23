@@ -205,7 +205,7 @@ function ProductsLists() {
                       }}
                     >
                   
-                      <span className="shop-cat-icon">📦</span>
+                      <span className="shop-cat-icon"></span>
                       <span>{cat.name}</span>
                       {!isMobile && cat.sub.length > 0 && (
                         <span className="shop-cat-chevron">›</span>
