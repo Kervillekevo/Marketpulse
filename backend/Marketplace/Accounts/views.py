@@ -42,9 +42,9 @@ def Loginview(request):
             token, created = Token.objects.get_or_create(user=user)
             return Response({
                 "message": "Login successful",
-                "user": SignupSerializer(user).data,  # 👈 show consistent user info
+                "user": SignupSerializer(user).data,  #show consistent user info
                 "token": token.key
-            }, status=status.HTTP_200_OK)  # 👈 fixed
+            }, status=status.HTTP_200_OK)  #fixed
         return Response({"error": "Invalid username or password"}, status=status.HTTP_401_UNAUTHORIZED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -77,7 +77,7 @@ def request_password_reset_email(request):
         uidb64 = urlsafe_base64_encode(smart_bytes(user.pk))
         token = PasswordResetTokenGenerator().make_token(user)
 
-        reset_url = f"http://localhost:5173/reset-password/{uidb64}/{token}/"
+        reset_url = f"{settings.FRONTEND_URL}/reset-password/{uidb64}/{token}/"
 
         print(' RESET URL:', reset_url)
     
