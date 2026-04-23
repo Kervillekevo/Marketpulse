@@ -74,9 +74,9 @@ function Home() {
                 </button>
               </div>
               <div className="h-trust">
-                <span>✅ Genuine Products</span>
-                <span>🔒 Secure Payments</span>
-                <span>📦 Easy Returns</span>
+                <span>Genuine Products</span>
+                <span>Secure Payments</span>
+                <span>Easy Returns</span>
               </div>
             </div>
             <div className="h-hero-right">
@@ -150,22 +150,22 @@ function Home() {
             </div>
             <div className="h-why-grid">
               <div className="h-why-card">
-                <div className="h-why-icon">🚀</div>
+                <div className="h-why-icon"></div>
                 <h3>Same Day Delivery</h3>
                 <p>Order before 2PM and get your items delivered the same day within Nairobi.</p>
               </div>
               <div className="h-why-card">
-                <div className="h-why-icon">🛡️</div>
+                <div className="h-why-icon"></div>
                 <h3>Genuine Products</h3>
                 <p>Every product we sell is 100% genuine and sourced from authorized distributors.</p>
               </div>
               <div className="h-why-card">
-                <div className="h-why-icon">💰</div>
+                <div className="h-why-icon"></div>
                 <h3>Best Prices</h3>
                 <p>We work directly with suppliers to bring you the most competitive tech prices in Kenya.</p>
               </div>
               <div className="h-why-card">
-                <div className="h-why-icon">🔄</div>
+                <div className="h-why-icon"></div>
                 <h3>Easy Returns</h3>
                 <p>Not satisfied? Return your item within 7 days for a full refund. No questions asked.</p>
               </div>
