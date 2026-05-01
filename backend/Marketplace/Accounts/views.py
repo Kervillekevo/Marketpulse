@@ -1,20 +1,20 @@
+import threading
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics, permissions
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from .serializers import SignupSerializer, LoginSerializer, PasswordResetRequestSerializer, SetNewPasswordSerializer, ProfileSerializer
-from rest_framework.response import Response
 from django.utils.encoding import force_str, smart_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import send_mail
 from django.conf import settings
-from rest_framework import status, generics, permissions
 from .models import Profile
+
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -31,7 +31,7 @@ def Signupview(request):
 
 
 @api_view(['POST'])
-@permission_classes([AllowAny]) 
+@permission_classes([AllowAny])
 def Loginview(request):
     serializer = LoginSerializer(data=request.data)
     if serializer.is_valid():
@@ -54,7 +54,7 @@ class LogoutView(APIView):
     def post(self, request):
         request.user.auth_token.delete()
         return Response({"message": "Successfully logged out"}, status=status.HTTP_200_OK)
-    
+
 
 class ProfileDetailView(generics.RetrieveUpdateAPIView):
     serializer_class = ProfileSerializer
@@ -62,8 +62,23 @@ class ProfileDetailView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         profile, created = Profile.objects.get_or_create(user=self.request.user)
-        return profile  
-    
+        return profile
+
+
+def send_reset_email_thread(username, email, reset_url):
+    try:
+        send_mail(
+            subject='Password Reset Request',
+            message=f'Hi {username},\n\nClick the link to reset your password:\n{reset_url}\n\nIf you did not request this, please ignore.',
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[email],
+            fail_silently=True,
+        )
+        print("Email sent successfully")
+    except Exception as e:
+        print(f"Email failed: {e}")
+
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def request_password_reset_email(request):
@@ -76,22 +91,15 @@ def request_password_reset_email(request):
     if user:
         uidb64 = urlsafe_base64_encode(smart_bytes(user.pk))
         token = PasswordResetTokenGenerator().make_token(user)
-
         reset_url = f"{settings.FRONTEND_URL}/reset-password/{uidb64}/{token}/"
+        print('RESET URL:', reset_url)
 
-        print(' RESET URL:', reset_url)
-    
-        try:
-            send_mail(
-            subject='Password Reset Request',
-            message=f'Hi {user.username},\n\nClick the link to reset your password:\n{reset_url}\n\nIf you did not request this, please ignore.',
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[email],
-            fail_silently=False,
-            )
-            print("Email sent successfully")
-        except Exception as e:
-            print(f"Email failed: {e}")
+        thread = threading.Thread(
+            target=send_reset_email_thread,
+            args=(user.username, email, reset_url)
+        )
+        thread.daemon = True
+        thread.start()
 
     return Response(
         {'success': 'If your email exists, we sent a password reset link.'},
@@ -134,5 +142,3 @@ def password_reset_confirm(request, uidb64, token):
     user.save()
 
     return Response({'success': 'Password reset successful!'}, status=status.HTTP_200_OK)
-
-
