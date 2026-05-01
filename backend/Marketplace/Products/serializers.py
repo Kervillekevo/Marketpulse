@@ -41,5 +41,5 @@ class ProductsSerializers(serializers.ModelSerializer):
             'user'
         ]
     def get_discount_percentage(self, obj):
-        return obj.discount_percentage()    
+        return obj.discount_percentage()
 

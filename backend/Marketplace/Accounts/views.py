@@ -17,7 +17,7 @@ from rest_framework import status, generics, permissions
 from .models import Profile
 
 @api_view(['POST'])
-@permission_classes([AllowAny])   
+@permission_classes([AllowAny])
 def Signupview(request):
     serializer = SignupSerializer(data=request.data)
     if serializer.is_valid():
@@ -42,9 +42,9 @@ def Loginview(request):
             token, created = Token.objects.get_or_create(user=user)
             return Response({
                 "message": "Login successful",
-                "user": SignupSerializer(user).data,  #show consistent user info
+                "user": SignupSerializer(user).data,
                 "token": token.key
-            }, status=status.HTTP_200_OK)  #fixed
+            }, status=status.HTTP_200_OK)
         return Response({"error": "Invalid username or password"}, status=status.HTTP_401_UNAUTHORIZED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

@@ -34,7 +34,7 @@ def ProductList(request):
 def CreateProduct(request):
     serializer = ProductsSerializers(data=request.data)
     if serializer.is_valid():
-        serializer.save(user=request.user)  # ✅ attach current user
+        serializer.save(user=request.user)  #attach current user
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -47,7 +47,7 @@ def ProductUpdate(request, pk):
     except Product.DoesNotExist:
         return Response({"error": "Product not found"}, status=status.HTTP_404_NOT_FOUND)
     
-    if product.user != request.user:  # ✅ compare instance user
+    if product.user != request.user:  #compare instance user
         return Response({"error": "You are not allowed to update this product"}, status=status.HTTP_403_FORBIDDEN)
     
     serializer = ProductsSerializers(product, data=request.data)

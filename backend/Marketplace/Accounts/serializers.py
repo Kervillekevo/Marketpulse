@@ -54,7 +54,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             instance.profile_photo.delete(save=False)
             instance.profile_photo = None
 
-        #Get photo from request.FILES directly
+    
         request = self.context.get('request')
         if request and request.FILES.get('profile_photo'):
             instance.profile_photo = request.FILES['profile_photo']

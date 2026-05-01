@@ -126,7 +126,7 @@ Track your order at: {settings.FRONTEND_URL}/orders
 
 Need help? Contact us:
 📞 0790 240220
-📧 kelvinngui00@gmail.com
+kelvinngui00@gmail.com
 
 Thank you for shopping with Big Five Technologies! 💻
                 """,
@@ -179,7 +179,7 @@ def cancel_order(request, order_id):
         order.shipment.status = 'cancelled'
         order.shipment.save()
 
-    # Send cancellation email
+    #Send cancellation email
     try:
         if request.user.email:
             send_mail(
@@ -194,7 +194,7 @@ If this was a mistake, please place a new order at:
 
 Need help? Contact us:
 📞 0790 240220
-📧 kelvinngui00@gmail.com
+kelvinngui00@gmail.com
 
 Big Five Technologies 💻
                 """,
@@ -255,7 +255,7 @@ Go to My Orders to pay:
 
 Need help? Contact us:
 📞 0790 240220
-📧 kelvinngui00@gmail.com
+kelvinngui00@gmail.com
 
 Big Five Technologies 💻
                     """,
@@ -346,9 +346,9 @@ def mpesa_stk_push(request):
 def mpesa_callback(request):
     data = request.data
 
-    print("\n===== MPESA CALLBACK RECEIVED =====")
+    print("\nMPESA CALLBACK RECEIVED")
     print(data)
-    print("===================================\n")
+    print("\n")
 
     try:
         callback = data["Body"]["stkCallback"]
@@ -400,7 +400,7 @@ def mpesa_callback(request):
             except Exception as e:
                 print(f"Shipment update error: {str(e)}")
 
-            # Send payment confirmation email
+            #Send payment confirmation email
             try:
                 if order.user.email:
                     send_mail(
@@ -408,15 +408,14 @@ def mpesa_callback(request):
                         message=f"""
 Hi {order.user.username},
 
-Your M-Pesa payment has been received successfully! 
+Your M-Pesa payment has been received successfully!
 
-━━━━━━━━━━━━━━━━━━━━━━━
 PAYMENT DETAILS
-━━━━━━━━━━━━━━━━━━━━━━━
+
 Order #: {order.id}
 Amount Paid: Ksh {amount}
 M-Pesa Receipt: {mpesa_receipt_number}
-━━━━━━━━━━━━━━━━━━━━━━━
+
 
 Your order is now being processed and will be
 delivered to your provided address.
@@ -426,7 +425,7 @@ Track your order at:
 
 Need help? Contact us:
 📞 0790 240220
-📧 kelvinngui00@gmail.com
+kelvinngui00@gmail.com
 
 Thank you for shopping with Big Five Technologies! 💻
                         """,

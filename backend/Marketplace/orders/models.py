@@ -6,9 +6,6 @@ from django.utils import timezone
 from datetime import timedelta
 
 
-# ------------------------
-# CART
-# ------------------------
 
 class Cart(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='cart')
@@ -32,9 +29,6 @@ class CartItem(models.Model):
         return self.product.price * self.quantity
 
 
-# ------------------------
-# ORDER
-# ------------------------
 
 class Order(models.Model):
     STATUS_CHOICES = [
@@ -75,8 +69,6 @@ class Shipment(models.Model):
     ]
 
     SHIPPING_METHODS = [
-        ('standard', 'Standard Delivery'),
-        ('express', 'Express Delivery'),
         ('pickup', 'Store Pickup'),
     ]
 
@@ -99,7 +91,7 @@ class Shipment(models.Model):
     shipping_method = models.CharField(
         max_length=20,
         choices=SHIPPING_METHODS,
-        default='standard'
+        default='pickup'
     )
 
     shipping_fee = models.DecimalField(max_digits=7, decimal_places=2, default=0)
@@ -124,26 +116,14 @@ class Shipment(models.Model):
 
     def save(self, *args, **kwargs):
 
-        #  Auto tracking number
+        # Auto tracking number
         if not self.tracking_number:
             self.tracking_number = str(uuid.uuid4()).replace('-', '')[:12].upper()
 
-        # Auto shipping fee
-        if self.shipping_method == 'standard':
-            self.shipping_fee = 5
-        elif self.shipping_method == 'express':
-            self.shipping_fee = 15
+        
         elif self.shipping_method == 'pickup':
             self.shipping_fee = 0
 
-        #  Auto estimated delivery
-        if not self.estimated_delivery_date:
-            if self.shipping_method == 'standard':
-                self.estimated_delivery_date = timezone.now().date() + timedelta(days=5)
-            elif self.shipping_method == 'express':
-                self.estimated_delivery_date = timezone.now().date() + timedelta(days=2)
-            else:
-                self.estimated_delivery_date = timezone.now().date()
 
         super().save(*args, **kwargs)
 

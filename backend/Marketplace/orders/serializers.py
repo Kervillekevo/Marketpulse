@@ -47,7 +47,7 @@ class ShipmentSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
-    shipment = ShipmentSerializer(read_only=True)  # lowercase & matches related_name
+    shipment = ShipmentSerializer(read_only=True)
 
     class Meta:
         model = Order

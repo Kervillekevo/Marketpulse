@@ -18,7 +18,7 @@ class Profile(models.Model):
 # Create your models here.
 
 
-    # ✅ Signal to auto-create Profile when User is created
+
 @receiver(post_save, sender=User)
 def create_or_save_user_profile(sender, instance, created, **kwargs):
     if created:
@@ -33,4 +33,4 @@ def create_or_save_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
-# Create your models here.
+
