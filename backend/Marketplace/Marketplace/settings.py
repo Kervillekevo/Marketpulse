@@ -112,7 +112,7 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
-CORS_PREFLIGHT_MAX_AGE = 86400    
+CORS_PREFLIGHT_MAX_AGE = 86400
 
 #Frontend URL
 FRONTEND_URL = config('FRONTEND_URL', default='http://localhost:5173')
@@ -134,13 +134,8 @@ REST_FRAMEWORK = {
 }
 
 #CORS — allow both local and production frontend
-CORS_ALLOWED_ORIGINS = [
-    origin.strip()
-    for origin in config(
-        'CORS_ALLOWED_ORIGINS',
-        default='http://localhost:5173,http://127.0.0.1:5173'
-    ).split(',')
-]
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 CORS_ALLOW_CREDENTIALS = True
 
