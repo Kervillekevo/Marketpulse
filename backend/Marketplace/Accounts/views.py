@@ -142,3 +142,19 @@ def password_reset_confirm(request, uidb64, token):
     user.save()
 
     return Response({'success': 'Password reset successful!'}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def test_email(request):
+    try:
+        send_mail(
+            subject='Test Email from Big Five',
+            message='This is a test email from your Django app.',
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=['kelvinngui00@gmail.com'],
+            fail_silently=False,
+        )
+        return Response({'success': 'Email sent!'}, status=200)
+    except Exception as e:
+        return Response({'error': str(e)}, status=500)
