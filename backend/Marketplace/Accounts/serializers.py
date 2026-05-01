@@ -64,8 +64,6 @@ class ProfileSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
     
-#Requests a reset link via email
-#Collects users email so that you can send them reset link
 class PasswordResetRequestSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
