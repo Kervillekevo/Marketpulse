@@ -181,7 +181,6 @@ function Orders() {
       <>
         <div className="orders-empty-wrap">
           <div className="orders-empty">
-            <span className="orders-empty-icon">🔐</span>
             <h2>Sign in to view orders</h2>
             <p>You need to be signed in to see your order history.</p>
             <button className="orders-empty-btn" onClick={() => navigate("/")}>Sign In</button>

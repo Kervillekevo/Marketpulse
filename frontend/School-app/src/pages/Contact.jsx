@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./Contact.css";
 import Footer from "../components/Footer";
-import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaWhatsapp } from "react-icons/fa";
+import { FaFacebookF, FaXTwitter, FaInstagram, FaLinkedinIn, FaWhatsapp } from "react-icons/fa6";
 
 const contactCards = [
   { icon: "📞", label: "Call Us",    value: "0790 240220",              sub: "Mon–Sat, 8am–8pm" },
@@ -145,11 +145,11 @@ function Contact() {
             <div className="contact-side-card">
               <h3>Quick Links</h3>
               <div className="contact-quick-links">
-                <a href="/">🛍️ Browse Products</a>
-                <a href="/orders">📦 Track My Order</a>
-                <a href="/about">ℹ️ About Us</a>
-                <a href="#">📋 Return Policy</a>
-                <a href="#">🔒 Privacy Policy</a>
+                <a href="/">Browse Products</a>
+                <a href="/orders">Track My Order</a>
+                <a href="/about">About Us</a>
+                <a href="#">Return Policy</a>
+                <a href="#">Privacy Policy</a>
               </div>
             </div>
 
@@ -158,7 +158,7 @@ function Contact() {
               <p className="contact-social-desc">Stay updated with our latest deals and tech news.</p>
               <div className="contact-socials">
                 <a href="#" className="contact-social-btn"><FaFacebookF /></a>
-                <a href="#" className="contact-social-btn"><FaTwitter /></a>
+                <a href="#" className="contact-social-btn"><FaXTwitter /></a>
                 <a href="#" className="contact-social-btn"><FaInstagram /></a>
                 <a href="#" className="contact-social-btn"><FaLinkedinIn /></a>
                 <a href="#" className="contact-social-btn whatsapp"><FaWhatsapp /></a>

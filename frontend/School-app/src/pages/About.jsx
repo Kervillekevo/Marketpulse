@@ -1,6 +1,6 @@
 import Footer from "../components/Footer";
 import "./About.css";
-import { FaTwitter, FaLinkedinIn, FaGithub } from "react-icons/fa";
+import { FaXTwitter, FaLinkedinIn, FaGithub } from "react-icons/fa6";
 
 const stats = [
   { value: "50K+", label: "Happy Customers" },
@@ -80,22 +80,18 @@ function About() {
             </div>
             <div className="about-mission-visual">
               <div className="about-visual-card about-card-1">
-                <span>💻</span>
                 <strong>5,000+</strong>
                 <p>Tech products available</p>
               </div>
               <div className="about-visual-card about-card-2">
-                <span>📦</span>
                 <strong>Same Day</strong>
                 <p>Delivery in Nairobi</p>
               </div>
               <div className="about-visual-card about-card-3">
-                <span>⭐</span>
                 <strong>4.9 / 5</strong>
                 <p>Average rating</p>
               </div>
               <div className="about-visual-card about-card-4">
-                <span>🔒</span>
                 <strong>100%</strong>
                 <p>Genuine products</p>
               </div>
@@ -136,7 +132,7 @@ function About() {
                   <h4>{member.name}</h4>
                   <p>{member.role}</p>
                   <div className="about-team-socials">
-                    <a href="#"><FaTwitter /></a>
+                    <a href="#"><FaXTwitter /></a>
                     <a href="#"><FaLinkedinIn /></a>
                     <a href="#"><FaGithub /></a>
                   </div>

@@ -148,8 +148,8 @@ function Cart() {
   const total = items.reduce(
     (sum, item) => sum + Number(item.product.price) * item.quantity, 0
   );
-  const delivery = total >= 5000 ? 0 : 200;
-  const grandTotal = total + delivery;
+  
+  const grandTotal = total;
 
   return (
     <>
