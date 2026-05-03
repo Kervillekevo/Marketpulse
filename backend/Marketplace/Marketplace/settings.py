@@ -8,7 +8,7 @@ import cloudinary.api
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-#Read from .env
+
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
@@ -34,7 +34,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  #whitenoise for static files
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -76,7 +76,6 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 WSGI_APPLICATION = 'Marketplace.wsgi.application'
 
-#Database — uses PostgreSQL on Render, SQLite locally
 DATABASE_URL = config('DATABASE_URL', default=None)
 
 if DATABASE_URL:
@@ -114,7 +113,7 @@ CORS_ALLOW_HEADERS = [
 
 CORS_PREFLIGHT_MAX_AGE = 86400
 
-#Frontend URL
+
 FRONTEND_URL = config('FRONTEND_URL', default='http://localhost:5173')
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -133,13 +132,12 @@ REST_FRAMEWORK = {
     ],
 }
 
-#CORS — allow both local and production frontend
 CORS_ALLOW_ALL_ORIGINS = True
 
 
 CORS_ALLOW_CREDENTIALS = True
 
-# CSRF
+
 CSRF_TRUSTED_ORIGINS = [
     origin.strip()
     for origin in config(
@@ -153,17 +151,16 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-#Static files with WhiteNoise
+
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-#Media files
 MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Email
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -172,7 +169,7 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
 
-# MPESA
+
 MPESA_ENV = config('MPESA_ENV', default='sandbox')
 MPESA_CONSUMER_KEY = config('MPESA_CONSUMER_KEY')
 MPESA_CONSUMER_SECRET = config('MPESA_CONSUMER_SECRET')

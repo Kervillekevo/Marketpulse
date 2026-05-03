@@ -17,7 +17,7 @@ class SubCategoryAdmin(admin.ModelAdmin):
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
-    extra = 1  # shows 1 empty image field by default
+    extra = 1
 
 
 @admin.register(Product)
