@@ -36,7 +36,6 @@ export function AuthProvider({ children }) {
       const profileData = await profileRes.json();
       setUser(profileData);
 
-      //Fetch Cart
       const cartRes = await fetch(`${import.meta.env.VITE_API_BASE_URL}/orders/cart/`, {
         headers: { Authorization: `Token ${token}` },
       });
@@ -234,7 +233,7 @@ export function AuthProvider({ children }) {
         setUser(data);
       } else {
         setUser(null);
-        // If profile reload fails, token might be invalid
+
         if (res.status === 401) {
           setToken(null);
           localStorage.removeItem('token');

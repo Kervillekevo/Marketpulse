@@ -51,7 +51,7 @@ function ProductDetails() {
       });
       if (!response.ok) throw new Error("Failed to add to cart");
       setCartCount((prev) => prev + 1);
-      alert("Added to cart successfully 🛒");
+      alert("Added to cart successfully");
     } catch {
       alert("Something went wrong.");
     } finally {
@@ -63,7 +63,7 @@ function ProductDetails() {
   const handleWhatsAppOrder = () => {
     if (!product) return;
 
-    const phoneNumber = "254742800420"; 
+    const phoneNumber = "254742800420";
 
     const message = `
 Hello, I would like to order:

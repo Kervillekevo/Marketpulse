@@ -246,7 +246,7 @@ function Cart() {
               </button>
 
               <button className="clear-btn" onClick={clearCart}>
-                🗑 Clear Cart
+                Clear Cart
               </button>
 
               <div className="trust-row">

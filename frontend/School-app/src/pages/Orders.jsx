@@ -228,7 +228,7 @@ function Orders() {
                     <div className="order-header-left">
                       <h4>Order #{order.id}</h4>
                       <span className="order-date">
-                        📅 {new Date(order.created_at).toLocaleDateString("en-KE", { year: "numeric", month: "long", day: "numeric" })}
+                        {new Date(order.created_at).toLocaleDateString("en-KE", { year: "numeric", month: "long", day: "numeric" })}
                       </span>
                     </div>
                     <div className="order-header-right">
@@ -340,12 +340,12 @@ function Orders() {
                       )}
                       {order.status === "pending" && !order.shipment && (
                         <button className="btn-ship" onClick={() => setShipmentModal(order.id)}>
-                          📍 Add Delivery Details
+                          Add Delivery Details
                         </button>
                       )}
                       {order.status === "pending" && order.shipment && (
                         <button className="btn-pay" onClick={() => { setPayModal(order.id); setPayPhone(""); }} disabled={payingId === order.id}>
-                          💳 Pay Now
+                          Pay Now
                         </button>
                       )}
                       {!["shipped", "completed", "cancelled"].includes(order.status) && (
@@ -439,7 +439,7 @@ function Orders() {
                 <label>Shipping Method</label>
                 <div className="shipping-method-options">
                   {[
-                    { value: "pickup",   icon: "🏪", name: "Store Pickup",      desc: "Today · Free" },
+                    { value: "pickup",    name: "Store Pickup",      desc: "Today · Free" },
                   ].map((m) => (
                     <label key={m.value} className={`method-option ${shipmentForm.shipping_method === m.value ? "selected" : ""}`}>
                       <input type="radio" name="shipping_method" value={m.value} checked={shipmentForm.shipping_method === m.value} onChange={(e) => setShipmentForm({ ...shipmentForm, shipping_method: e.target.value })} />
