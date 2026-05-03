@@ -201,15 +201,6 @@
     gap: 28px;
   }
 
-  .footer-trust {
-    gap: 8px;
-  }
-
-  .trust-chip {
-    font-size: 12px;
-    padding: 8px 14px;
-  }
-
   .footer-bottom-inner {
     flex-direction: column;
     align-items: flex-start;
