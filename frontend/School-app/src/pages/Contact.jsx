@@ -166,7 +166,7 @@ function Contact() {
             </div>
 
             <div className="contact-hours-card">
-              <h3>⏰ Business Hours</h3>
+              <h3>Business Hours</h3>
               <div className="contact-hours-list">
                 <div className="contact-hours-row">
                   <span>Monday – Friday</span>

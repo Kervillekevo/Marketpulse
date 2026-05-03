@@ -159,39 +159,6 @@
   padding-left: 4px;
 }
 
-.footer-trust-bar {
-  background: rgba(255, 255, 255, 0.03);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 20px 0;
-}
-
-.footer-trust {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-}
-
-.trust-chip {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  color: #9ca3af;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 9px 18px;
-  border-radius: 30px;
-  transition: all 0.2s;
-}
-
-.trust-chip:hover {
-  background: rgba(255, 255, 255, 0.09);
-  color: #fff;
-}
-
 .footer-bottom {
   padding: 20px 0;
 }

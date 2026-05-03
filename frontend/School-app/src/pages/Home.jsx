@@ -46,7 +46,7 @@ function Home() {
               </h1>
               <p>
                 Discover the latest laptops, phones, cameras & more at unbeatable prices.
-                Enjoy <strong>Same Day Delivery 🛵</strong> within Nairobi
+                Enjoy <strong>Same Day Delivery </strong> within Nairobi
                 and <strong>Next Day</strong> delivery across KENYA 🇰🇪
               </p>
               <div className="h-stats">

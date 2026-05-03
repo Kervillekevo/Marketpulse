@@ -112,7 +112,6 @@ function Cart() {
       <>
         <div className="cart-empty-wrap">
           <div className="cart-empty">
-            <span className="cart-empty-icon">🔐</span>
             <h2>Sign in to view your cart</h2>
             <p>You need to be signed in to add items and place orders.</p>
             <button className="cart-empty-btn" onClick={() => navigate("/")}>
@@ -135,7 +134,7 @@ function Cart() {
             <span className="cart-empty-icon">🛒</span>
             <h2>Your cart is empty</h2>
             <p>Looks like you haven't added anything yet. Start shopping and find something you love!</p>
-            <button className="cart-empty-btn" onClick={() => navigate("/")}>
+            <button className="cart-empty-btn" onClick={() => navigate("/products")}>
               Browse Products
             </button>
           </div>
@@ -219,7 +218,7 @@ function Cart() {
                         </div>
 
                         <button className="remove-btn" onClick={() => removeItem(item.id)}>
-                          🗑 Remove
+                          Remove
                         </button>
                       </div>
                     </div>

@@ -286,7 +286,7 @@ export default function Navbar() {
 
             {user.profile_photo && !removePhoto && (
               <button className="remove-photo-btn" onClick={() => setRemovePhoto(true)}>
-                🗑 Remove Photo
+                Remove Photo
               </button>
             )}
 

@@ -25,7 +25,6 @@ export function AuthProvider({ children }) {
     }
 
     try {
-      // 1️⃣ Fetch Profile
       const profileRes = await fetch(`${BASE_URL}/profile/`, {
         headers: { Authorization: `Token ${token}` },
       });
@@ -127,12 +126,11 @@ export function AuthProvider({ children }) {
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
-      // Always clear local state regardless of server response
       localStorage.removeItem('token');
       setToken(null);
       setUser(null);
       setCartCount(0);
-      console.log('✅ Logged out successfully');
+      console.log('Logged out successfully');
     }
   };
 
@@ -248,7 +246,6 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Helper function to check if user is authenticated
   const isAuthenticated = () => {
     return !!(token && user);
   };

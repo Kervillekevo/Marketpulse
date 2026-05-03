@@ -68,9 +68,9 @@ function ProductDetails() {
     const message = `
 Hello, I would like to order:
 
-🛍 Product: ${product.title}
-💰 Price: Ksh ${Number(product.price).toLocaleString()}
-🔗 Product Link: ${window.location.href}
+Product: ${product.title}
+Price: Ksh ${Number(product.price).toLocaleString()}
+Product Link: ${window.location.href}
 
 Please confirm availability. Thank you.
 `;
@@ -153,7 +153,7 @@ Please confirm availability. Thank you.
           <div className="details-info">
             {product.category && (
               <div className="product-category-tag">
-                🏷️ {product.subcategory || product.category}
+                {product.subcategory || product.category}
               </div>
             )}
 

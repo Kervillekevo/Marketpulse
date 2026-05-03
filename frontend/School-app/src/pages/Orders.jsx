@@ -196,7 +196,6 @@ function Orders() {
       <>
         <div className="orders-empty-wrap">
           <div className="orders-empty">
-            <span className="orders-empty-icon">📦</span>
             <h2>No orders yet</h2>
             <p>You haven't placed any orders. Start shopping and your orders will appear here.</p>
             <button className="orders-empty-btn" onClick={() => navigate("/")}>Start Shopping</button>
